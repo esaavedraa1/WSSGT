@@ -76,7 +76,7 @@ public class WSSGT {
             System.out.println("+--------------------------------------------+");
             System.out.println("|  9   |        BUSSINES TO BUSINNES         |");
             System.out.println("+--------------------------------------------+");
-            System.out.println("|  10   |               EXIT                 |");
+            System.out.println("|  0   |               EXIT                 |");
             System.out.println("+--------------------------------------------+");
             System.out.print("Select a number >> ");
             try
@@ -142,39 +142,58 @@ public class WSSGT {
                     switch(op3)
                     {
                         case 301:
-                            try{
-                                System.out.print("\nIngrese Mes >>");
-                                String V_MON = sc.nextLine();
-                                System.out.print("\nIngrese Año >>");
-                                String V_YEAR = sc.nextLine();
-                                Statement stmt= connection.createStatement();
-                                String sql="SELECT LOCA_NOMBRE,HISTORICO(LOCA_NOMBRE, 1,'"+V_MON+"','"+V_YEAR+"') AS \"LUNES\",HISTORICO(LOCA_NOMBRE, 2,'"+V_MON+"','"+V_YEAR+"') AS \"MARTES\",  \n" +
-"HISTORICO(LOCA_NOMBRE, 3,'"+V_MON+"','"+V_YEAR+"') AS \"MIERCOLES\" ,HISTORICO(LOCA_NOMBRE, 4,'"+V_MON+"','"+V_YEAR+"') AS \"JUEVES\",HISTORICO(LOCA_NOMBRE, 5,'"+V_MON+"','"+V_YEAR+"') AS \"VIERNES\" \n" +
-",HISTORICO(LOCA_NOMBRE, 6,'"+V_MON+"','"+V_YEAR+"') AS \"SABADO\" ,HISTORICO(LOCA_NOMBRE, 7,'"+V_MON+"','"+V_YEAR+"') AS \"DOMINGO\" ,HISTORICO_TOTAL(LOCA_NOMBRE,'"+V_MON+"','"+V_YEAR+"') AS \"TOTAL\"\n" +
-"FROM SGT_LOCALIDAD WHERE LOCAT_ID = 4 GROUP BY  LOCA_NOMBRE ORDER BY LOCA_NOMBRE ASC";
-                               
-                                ResultSet rs=stmt.executeQuery(sql);  
-
-                                String leftAlignFormat = "| %-20s| %-8s | %-8s | %-9s | %-7s |%-9s | %-8s |%-8s | %-8s |%n";
-
-                                System.out.format("+---------------------+----------+----------+-----------+---------+----------+----------+---------+----------+%n");
-                                System.out.format("|       DESTINO       |   LUNES  |  MARTES  | MIERCOLES | JUEVES  | VIERNES  |  SABADO  | DOMINGO |   TOTAL  |%n");
-                                System.out.format("+---------------------+----------+----------+-----------+---------+----------+----------+---------+----------+%n");
-                                   while(rs.next()) {
-
-                                    System.out.format(leftAlignFormat, rs.getString(1) ,rs.getString(2),rs.getString(3), rs.getString(4) ,rs.getString(5),rs.getString(6), rs.getString(7) ,rs.getString(8),rs.getString(9));  
-              
-                                   }
-
-                                  System.out.format("+---------------------+----------+----------+-----------+---------+----------+----------+---------+-----------+%n");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.println("|  OP  |  30000 :MENÚ GESTIÓN DE VIAJES      |");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.println("| 30101|    PLANIFICACIÓN  HISTÓRICA         |");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.println("| 30102|    PLANIFICACIÓN PREDICTIVA         |");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.print("Select a number >> ");
+                            int op31 = 0;
+                            try
+                            {
+                                op31 = Integer.parseInt (br.readLine());
                             }
-                            catch (SQLException e) {
-
-                                System.out.println("Connection Failed! Check output console");
-                                e.printStackTrace();
-                                return;     
-
+                            catch(Exception e)
+                            {
+                              System.out.println("Failed to make connection!");  
                             }
+                            switch(op31){
+                                case 30101:
+                                    try{
+                                    System.out.print("\nIngrese Mes (Mayusculas) >>");
+                                    String V_MON = sc.nextLine();
+                                    System.out.print("\nIngrese Año (4 Digitos)>>");
+                                    String V_YEAR = sc.nextLine();
+                                    Statement stmt= connection.createStatement();
+                                    String sql="SELECT LOCA_NOMBRE,HISTORICO(LOCA_NOMBRE, 1,'"+V_MON+"','"+V_YEAR+"') AS \"LUNES\",HISTORICO(LOCA_NOMBRE, 2,'"+V_MON+"','"+V_YEAR+"') AS \"MARTES\",  \n" +
+                                        "HISTORICO(LOCA_NOMBRE, 3,'"+V_MON+"','"+V_YEAR+"') AS \"MIERCOLES\" ,HISTORICO(LOCA_NOMBRE, 4,'"+V_MON+"','"+V_YEAR+"') AS \"JUEVES\",HISTORICO(LOCA_NOMBRE, 5,'"+V_MON+"','"+V_YEAR+"') AS \"VIERNES\" \n" +
+                                        ",HISTORICO(LOCA_NOMBRE, 6,'"+V_MON+"','"+V_YEAR+"') AS \"SABADO\" ,HISTORICO(LOCA_NOMBRE, 7,'"+V_MON+"','"+V_YEAR+"') AS \"DOMINGO\" ,HISTORICO_TOTAL(LOCA_NOMBRE,'"+V_MON+"','"+V_YEAR+"') AS \"TOTAL\"\n" +
+                                        "FROM SGT_LOCALIDAD WHERE LOCAT_ID = 4 GROUP BY  LOCA_NOMBRE ORDER BY LOCA_NOMBRE ASC";                        
+                                    ResultSet rs=stmt.executeQuery(sql);  
+                                    String leftAlignFormat = "| %-20s| %-8s | %-8s | %-9s | %-7s |%-9s | %-8s |%-8s | %-8s |%n";
+                                    System.out.format("+---------------------+----------+----------+-----------+---------+----------+----------+---------+----------+%n");
+                                    System.out.format("|       DESTINO       |   LUNES  |  MARTES  | MIERCOLES | JUEVES  | VIERNES  |  SABADO  | DOMINGO |   TOTAL  |%n");
+                                    System.out.format("+---------------------+----------+----------+-----------+---------+----------+----------+---------+----------+%n");
+                                       while(rs.next()) {
+                                        System.out.format(leftAlignFormat, rs.getString(1) ,rs.getString(2),rs.getString(3), rs.getString(4) ,rs.getString(5),rs.getString(6), rs.getString(7) ,rs.getString(8),rs.getString(9));  
+                                       }
+                                      System.out.format("+---------------------+----------+----------+-----------+---------+----------+----------+---------+-----------+%n");
+                                    }
+                                    catch (SQLException e) {
+                                        System.out.println("Connection Failed! Check output console");
+                                        e.printStackTrace();
+                                        return;                                     
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("+------------------------------------------------------+");
+                                    System.out.println("| ERROR : SGT-0001 NO OPTION FOUND- PRESS ENTER TO EXIT|");
+                                    System.out.println("+------------------------------------------------------+");
+                                    cadena = sc.nextLine();
+                                    break;     
+                            }  
                             System.out.println("PRESS ENTER TO EXIT");
                             cadena = sc.nextLine();
                             break;
