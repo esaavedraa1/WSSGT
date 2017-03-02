@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.Scanner;
-
+import java.util.Date;
 
 
 public class WSSGT {
@@ -197,6 +197,273 @@ public class WSSGT {
                             System.out.println("PRESS ENTER TO EXIT");
                             cadena = sc.nextLine();
                             break;
+                        case 302:
+                            int despt_id = 0;
+                            int flotc_id = 0;
+                            int soli_m3 = 0;
+                            int loca_origen = 0;
+                            int loca_destino = 0;
+                            int prov_id = 0;
+                            int flott_id = 0;
+                            String soli_fecha = "";
+                            System.out.println("+--------------------------------------------+");
+                            System.out.println("|  OP  |  30000 :MENÚ GESTIÓN DE VIAJES      |");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.println("| 30201|       SOLICITUD PROGRAMADA          |");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.println("| 30202|       SOLICITUD EXPRESS             |");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.println("| 30203|       SOLICITUD PUBLICAR            |");
+                            System.out.println("+--------------------------------------------+");
+                            System.out.print("Select a number >> ");
+                            int op32 = 0;
+                            try
+                            {
+                                op32 = Integer.parseInt (br.readLine());
+                            }
+                            catch(Exception e)
+                            {
+                              System.out.println("Failed to make connection!");  
+                            }
+                            switch(op32)
+                            {
+                                case 30201:
+                                    System.out.println("Seleccione Tipo de Viaje");
+                                    try{
+                                        Statement stmt= connection.createStatement();
+                                        //step4 execute query  
+                                        ResultSet rs=stmt.executeQuery("SELECT DESPT_ID AS \"ID\" ,CONCAT(CONCAT(CONCAT(CONCAT(DESPT_ID,' - '),DESPT_TIPO),' - '),DESPT_DESCRIPCION) AS \"TIPO_VIAJE\"  FROM SGT_DESPACHO_TIPO");  
+
+                                        String leftAlignFormat = "| %-3s| %-40s |%n";
+
+                                        System.out.format("+----+------------------------------------------+%n");
+                                        System.out.format("| ID |                 DESCRIPCION              |%n");
+                                        System.out.format("+----+------------------------------------------+%n");
+                                           while(rs.next()) {
+
+                                            System.out.format(leftAlignFormat, rs.getString(1) ,rs.getString(2));  
+                                           }
+
+                                        System.out.format("+----+------------------------------------------+%n");
+                                    }
+                                     catch (SQLException e) {
+
+                                        System.out.println("Connection Failed! Check output console");
+                                        e.printStackTrace();
+                                        return;     
+
+                                    }
+                                    System.out.print("Select a number >> ");
+                                    try
+                                    {
+                                        despt_id = Integer.parseInt (br.readLine());
+                                    }
+                                    catch(Exception e)
+                                    {
+                                      System.out.println("Failed to make connection!");  
+                                    }
+                                    System.out.println("Seleccione Tipo de cobro");
+                                    int flotc_total = 0;
+                                    try{
+                                        Statement stmt= connection.createStatement();
+                                        //step4 execute query  
+                                        ResultSet rs=stmt.executeQuery("SELECT FLOTC_ID AS \"ID\",CONCAT(CONCAT(FLOTC_ID,' - '),FLOTC_TIPO) AS \"TIPO_COBRO\" FROM SGT_FLOTA_COBRO");  
+                                        flotc_total = rs.getRow();
+                                        String leftAlignFormat = "| %-3s| %-40s |%n";
+
+                                        System.out.format("+----+------------------------------------------+%n");
+                                        System.out.format("| ID |                 DESCRIPCION              |%n");
+                                        System.out.format("+----+------------------------------------------+%n");
+                                           while(rs.next()) {
+
+                                            System.out.format(leftAlignFormat, rs.getString(1) ,rs.getString(2));  
+                                           }
+                                        
+                                        System.out.format("+----+------------------------------------------+%n");
+                                    }
+                                    catch (SQLException e) {
+
+                                        System.out.println("Connection Failed! Check output console");
+                                        e.printStackTrace();
+                                        return;     
+
+                                    }
+                                    System.out.print("Select a number >> ");
+                                    do{
+                                        try
+                                        {
+                                            flotc_id = Integer.parseInt (br.readLine());
+                                        }
+                                        catch(Exception e)
+                                        {
+                                          System.out.println("Failed to make connection!");  
+                                        }
+                                    }while((flotc_id>flotc_total)&&(flotc_id<0));
+                                    if(flott_id == 2)
+                                    {
+                                        System.out.print("Ingrese la Cantidad de Metros Cubicos >>");
+                                        try
+                                        {
+                                            soli_m3 = Integer.parseInt (br.readLine());
+                                        }
+                                        catch(Exception e)
+                                        {
+                                          System.out.println("Failed to make connection!");  
+                                        }
+                                    }
+                                    System.out.println("Seleccione Destino");
+                                    int loca_total = 0;
+                                    int prov_total = 0;
+                                    int flott_total = 0;
+                                    if(despt_id == 1)//TRONCAL
+                                    {
+                                        try{
+                                            Statement stmt= connection.createStatement();
+                                            //step4 execute query  
+                                            ResultSet rs=stmt.executeQuery("SELECT LO.LOCA_ID AS \"ID\",CONCAT(CONCAT(CONCAT(CONCAT(LO.LOCA_DESCRIPCION,' - '),LT.LOCAT_TIPO),' - '),LO.LOCA_NOMBRE) AS \"DESTINO\" FROM SGT_LOCALIDAD LO ,SGT_LOCALIDAD_TIPO LT WHERE LO.LOCAT_ID = LT.LOCAT_ID AND LO.LOCAT_ID = 3");  
+                                            flotc_total = rs.getRow();
+                                            String leftAlignFormat = "| %-3s| %-40s |%n";
+
+                                            System.out.format("+----+------------------------------------------+%n");
+                                            System.out.format("| ID |                 DESCRIPCION              |%n");
+                                            System.out.format("+----+------------------------------------------+%n");
+                                               while(rs.next()) {
+
+                                                System.out.format(leftAlignFormat, rs.getString(1) ,rs.getString(2));  
+                                               }
+
+                                            System.out.format("+----+------------------------------------------+%n");
+                                        }
+                                        catch (SQLException e) {
+
+                                            System.out.println("Connection Failed! Check output console");
+                                            e.printStackTrace();
+                                            return;     
+
+                                        }
+                                        System.out.print("Select a number >> ");
+                                        do{
+                                            try
+                                            {
+                                                loca_destino = Integer.parseInt (br.readLine());
+                                            }
+                                            catch(Exception e)
+                                            {
+                                              System.out.println("Failed to make connection!");  
+                                            }
+                                        }while((loca_destino>loca_total)&&(loca_destino<0));
+                                    }  
+                                    System.out.println("Seleccione Transportista");
+                                    
+                                    try{
+                                        Statement stmt= connection.createStatement();
+                                        //step4 execute query  
+                                        ResultSet rs=stmt.executeQuery("SELECT PROV_ID AS \"ID\", CONCAT(CONCAT(PROV_ID,' - '),PROV_NOMBRE) AS \"TRANSPORTISTA\" FROM SGT_PROVEEDOR");  
+                                        prov_total = rs.getRow();
+                                        String leftAlignFormat = "| %-3s| %-40s |%n";
+
+                                        System.out.format("+----+------------------------------------------+%n");
+                                        System.out.format("| ID |                 DESCRIPCION              |%n");
+                                        System.out.format("+----+------------------------------------------+%n");
+                                           while(rs.next()) {
+
+                                            System.out.format(leftAlignFormat, rs.getString(1) ,rs.getString(2));  
+                                           }
+
+                                        System.out.format("+----+------------------------------------------+%n");
+                                    }
+                                    catch (SQLException e) {
+
+                                        System.out.println("Connection Failed! Check output console");
+                                        e.printStackTrace();
+                                        return;     
+
+                                    }
+                                    System.out.print("Select a number >> ");
+                                    do{
+                                        try
+                                        {
+                                            prov_id = Integer.parseInt (br.readLine());
+                                        }
+                                        catch(Exception e)
+                                        {
+                                          System.out.println("Failed to make connection!");  
+                                        }
+                                    }while((prov_id>prov_total)&&(prov_id<0));
+                                           System.out.println("Seleccione Tipo de Vahiculo");
+                                    
+                                    try{
+                                        Statement stmt= connection.createStatement();
+                                        //step4 execute query  
+                                        ResultSet rs=stmt.executeQuery("SELECT FLOTT_ID AS \"ID\", CONCAT(CONCAT(FLOTT_ID,' - '),FLOTT_TIPO) FROM SGT_FLOTA_TIPO");  
+                                        flott_total = rs.getRow();
+                                        String leftAlignFormat = "| %-3s| %-40s |%n";
+
+                                        System.out.format("+----+------------------------------------------+%n");
+                                        System.out.format("| ID |                 DESCRIPCION              |%n");
+                                        System.out.format("+----+------------------------------------------+%n");
+                                           while(rs.next()) {
+
+                                            System.out.format(leftAlignFormat, rs.getString(1) ,rs.getString(2));  
+                                           }
+
+                                        System.out.format("+----+------------------------------------------+%n");
+                                    }
+                                    catch (SQLException e) {
+
+                                        System.out.println("Connection Failed! Check output console");
+                                        e.printStackTrace();
+                                        return;     
+
+                                    }
+                                    System.out.print("Select a number >> ");
+                                    do{
+                                        try
+                                        {
+                                            flott_id = Integer.parseInt (br.readLine());
+                                        }
+                                        catch(Exception e)
+                                        {
+                                          System.out.println("Failed to make connection!");  
+                                        }
+                                    }while((flott_id>flott_total)&&(flott_id<0));  
+                                    System.out.print("Ingrese la Fecha de Presentacion >>");
+                                    try
+                                    {
+                                        soli_fecha = (br.readLine());
+                                    }
+                                    catch(Exception e)
+                                    {
+                                      System.out.println("Failed to make connection!");  
+                                    }
+                                    try
+                                    {                       
+                                        Statement stmt= connection.createStatement();
+                                        //step4 execute query 
+                                        String sql = "INSERT INTO \"SGT\".\"SGT_SOLICITUD\" (SOLIT_ID, DESPT_ID, FLOTC_ID, LOCA_ORIGEN, LOCA_DESTINO, PROV_ID, FLOTT_ID, SOLI_FECHA_PRESENTACION, SOLI_ESTADO, SOLI_FECHA_ESTADO) "
+                                                + "VALUES ('2', '"+despt_id+"', '"+flotc_id+"', '1', '"+loca_destino+"', '"+prov_id+"', '"+flott_id+"', TO_DATE('"+soli_fecha+"', 'DD/MM/YYYY HH24:MI:SS'), 'CREADO', SYSDATE)";
+                                        stmt.executeUpdate(sql);  
+                                        
+                                        System.out.println(sql);
+                                        stmt.executeUpdate("COMMIT");  
+                                    }                
+                                    catch (SQLException e) {
+
+                                        System.out.println("Connection Failed! Check output console");
+                                        e.printStackTrace();
+                                        return;     
+
+                                    } 
+                                    finally
+                                    {
+                                        System.out.println("Ingreso Correcto");
+                                    }
+                                    System.out.println("PRESS ENTER TO EXIT");
+                     
+                                    cadena = sc.nextLine();
+                                    break;                                
+                            }
+                            break;
                         default:
                             System.out.println("+------------------------------------------------------+");
                             System.out.println("| ERROR : SGT-0001 NO OPTION FOUND- PRESS ENTER TO EXIT|");
@@ -209,7 +476,6 @@ public class WSSGT {
                     System.out.println("+--------------------------------------------+");
                     System.out.println("|  SGT-MSG-1001 GOODBYE-PRESS ENTER TO EXIT  |");
                     System.out.println("+--------------------------------------------+");
-                    cadena = sc.nextLine();
                     break;
                 default:
                     System.out.println("+------------------------------------------------------+");
