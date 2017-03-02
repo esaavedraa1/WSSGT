@@ -299,7 +299,7 @@ public class WSSGT {
                                           System.out.println("Failed to make connection!");  
                                         }
                                     }while((flotc_id>flotc_total)&&(flotc_id<0));
-                                    if(flott_id == 2)
+                                    if(flotc_id == 2)
                                     {
                                         System.out.print("Ingrese la Cantidad de Metros Cubicos >>");
                                         try
